@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADMIN RIFA</title>
+<style>
+body{font-family:system-ui;background:#020617;color:#fff;padding:20px}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.box{
+ padding:14px;text-align:center;border-radius:10px;
+ background:#475569;font-weight:600
+}
+.box.active{background:#16a34a}
+button{margin-top:10px;padding:10px;border:none;border-radius:8px}
+</style>
+</head>
+
+<body>
+<h2>ADMIN – Boletos pagados</h2>
+
+<div class="grid" id="grid"></div>
+
+<h3>Fecha del sorteo</h3>
+<button onclick="setDate()">Cambiar fecha</button>
+
+<script>
+let sold=JSON.parse(localStorage.getItem("soldPublic")||"[]");
+const grid=document.getElementById("grid");
+
+for(let i=0;i<100;i++){
+ let n=i.toString().padStart(2,"0");
+ let d=document.createElement("div");
+ d.className="box"+(sold.includes(n)?" active":"");
+ d.innerText=n;
+ d.onclick=()=>{
+  sold.includes(n)?sold=sold.filter(x=>x!==n):sold.push(n);
+  localStorage.setItem("soldPublic",JSON.stringify(sold));
+  d.classList.toggle("active");
+ };
+ grid.appendChild(d);
+}
+
+function setDate(){
+ const f=prompt("Fecha del sorteo");
+ if(!f)return;
+ localStorage.setItem("drawDate",f);
+ alert("Fecha actualizada");
+}
+</script>
+</body>
+</html>
